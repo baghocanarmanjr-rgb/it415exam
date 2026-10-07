@@ -965,8 +965,19 @@
 
     .receipt {
       max-width: 100%;
-      overflow-wrap: anywhere
+      overflow-wrap: anywhere;
+      font-family: inherit;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px
     }
+
+    .receipt-items { overflow-x: auto; margin: 18px 0 }
+    .receipt table { min-width: 420px }
+    .receipt th, .receipt td { padding: 12px 8px }
+    .receipt tr:last-child td { background: transparent; border-bottom: 1px solid var(--line) }
+    .receipt .row { gap: 16px; padding: 6px 0 }
+    .receipt .row> :last-child { text-align: right }
 
     .receipt .row {
       flex-wrap: wrap
@@ -1295,6 +1306,7 @@
       cart: {},
       method: null,
       paid: "",
+      processing: false,
       error: "",
       txn: null
     };
@@ -1350,7 +1362,7 @@
         `<button class="new-transaction" onclick="newTxn()">+ New Transaction</button>` +
         [["Order", "order", 1], ["Review", "review", 2], ["Payment", "method", 3], ["Receipt", "receipt", 4]].map(([label, screen, step]) => {
           const active = current === step;
-          const allowed = step === 4 ? S.screen === "receipt" : editable && (step === 1 || count() > 0);
+          const allowed = step === 4 ? !!S.txn : editable && (step === 1 || count() > 0);
           return `<button class="${active ? 'active' : ''}" ${active ? 'aria-current="step"' : ''} ${allowed ? '' : 'disabled'} onclick="go('${screen}')">${label}</button>`;
         }).join("");
     }
@@ -1363,6 +1375,8 @@
     }
 
     function go(s) {
+      if ((s === "success" || s === "receipt") && !S.txn) return;
+      if (S.txn && s !== "success" && s !== "receipt") return;
       cancelCardPayment();
       S.screen = s;
       S.error = "";
@@ -1401,6 +1415,7 @@
         cart: {},
         method: null,
         paid: "",
+        processing: false,
         error: "",
         txn: null
       };
@@ -1411,15 +1426,23 @@
 
     function complete(method, paid) {
       if (S.txn || total() <= 0 || !Number.isFinite(paid) || paid < total()) return;
-      seq++;
+      // Re-read the counter for other kiosk tabs. A UUID also protects references
+      // when storage is unavailable, cleared, or two tabs complete together.
+      try {
+        const stored = Number(localStorage.getItem("kiosk_seq"));
+        if (Number.isSafeInteger(stored) && stored >= 0) seq = Math.max(seq, stored);
+      } catch (e) { }
+      seq = Number.isSafeInteger(seq) && seq >= 0 ? seq + 1 : 1;
+      const date = new Date();
+      const unique = crypto.randomUUID();
 
       try {
         localStorage.setItem("kiosk_seq", seq)
       } catch (e) { }
 
       S.txn = {
-        no: "TXN-" + new Date().getFullYear() + "-" + String(seq).padStart(5, "0"),
-        date: new Date(),
+        no: "TXN-" + date.getFullYear() + "-" + String(seq).padStart(5, "0") + "-" + unique,
+        date,
         items: items(),
         total: total(),
         method,
@@ -1971,7 +1994,7 @@
             <div class="check">✓</div>
 
             <h1 style="color:var(--ok)">
-              Payment Successful
+              Payment Successful!
             </h1>
 
             <p class="sub">
@@ -2039,7 +2062,7 @@
               </div>
 
               <div class="row">
-                <span>Date</span>
+                <span>Date/Time</span>
                 <span>
                   ${t.date.toLocaleString("en-PH", {
           dateStyle: "long",
@@ -2050,17 +2073,14 @@
 
               <hr>
 
-              ${t.items.map(i => `
-                  <div class="row">
-                    <b>${i.name}</b>
-                    <b>${peso(i.sub)}</b>
-                  </div>
-
-                  <div>
-                    ${i.qty} × ${peso(i.price)}
-                  </div>
-                `).join("")
-          }
+              <div class="receipt-items">
+                <table aria-label="Purchased items">
+                  <thead><tr><th scope="col">Item</th><th scope="col">Qty</th><th scope="col">Unit Price</th><th scope="col">Subtotal</th></tr></thead>
+                  <tbody>${t.items.map(i => `
+                    <tr><td>${i.name}</td><td>${i.qty}</td><td>${peso(i.price)}</td><td>${peso(i.sub)}</td></tr>
+                  `).join("")}</tbody>
+                </table>
+              </div>
 
               <hr>
 
