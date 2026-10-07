@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -485,6 +486,7 @@
     }
 
     @media print {
+
       header,
       .noprint,
       .toast {
@@ -498,93 +500,700 @@
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <style id="sample-match">
-    /* ===== Matches the instructor sample UI: palette, header, spacing, sizes ===== */
-    :root,:root:not([data-theme="light"]){--bg:#edf0f5;--card:#fff;--ink:#111827;--mute:#566074;--nav:#101828;--acc:#c2410c;--line:#dde2ea;--ok:#15803d;--err:#b91c1c}
-    @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#edf0f5;--card:#fff;--ink:#111827;--mute:#566074;--line:#dde2ea;--acc:#c2410c}}
-    body{font-family:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;font-size:18px;background:var(--bg);user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
-    header{height:86px;padding:0 35px;flex-wrap:nowrap;box-shadow:none}
-    .logo{width:48px;height:48px;border-radius:12px;font-size:20px;background:var(--acc)}
-    .brand{font-size:20px;line-height:1.15}.brand small{font-size:14px;font-weight:500!important}
-    .steps{gap:10px}.steps span{padding:10px 17px;font-size:16px;font-weight:700;border:1px solid #2b3547;background:transparent;color:#8b95a7}
-    .steps .done{background:#1b2436;color:#cbd5e1;border-color:#1b2436}.steps .on{background:#fff;color:var(--nav);border-color:#fff}
-    main{max-width:none;padding:0}main::after{content:"";display:block;height:48px}
-    main>*:not(.layout){max-width:1180px;margin-left:auto;margin-right:auto;padding-left:28px;padding-right:28px}
-    main>*:first-child:not(.layout){margin-top:48px}
-    h1{font-size:40px;font-weight:800;letter-spacing:-.02em;margin:0 0 8px}p.sub{font-size:19px;color:var(--mute);margin:0 0 24px}
-    button{border-radius:16px;min-height:62px;font-weight:700;border:2px solid var(--ink);background:#fff;transition:transform .1s}
-    button:active:not(:disabled){transform:scale(.97)}
-    button.p{background:var(--acc);border-color:var(--acc);color:#fff;min-height:76px;font-size:24px;border-radius:16px;box-shadow:none}
-    button:disabled{background:#e5e7eb;border-color:#e5e7eb;color:#6b7280;opacity:1}
-    /* order screen */
-    .layout{grid-template-columns:1fr 454px;gap:0;align-items:stretch}
-    .layout>section{padding:34px 36px}.toprow{align-items:center;margin-bottom:22px}.toprow h1{font-size:34px;margin:0}
-    .chips{display:flex;gap:10px}.chips button{min-height:52px;padding:0 24px;border:1px solid var(--line);border-radius:99px;font-size:18px}.chips .on{background:var(--nav);border-color:var(--nav);color:#fff}
-    .grid{grid-template-columns:repeat(3,1fr);gap:24px}@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
-    .item{padding:18px;border:2px solid var(--line);border-radius:20px;min-height:0;gap:14px;background:#fff;box-shadow:none}
-    .item.sel{border:3px solid var(--acc);padding:17px}
-    .ico{flex:none;aspect-ratio:1/.98;min-height:0;border-radius:14px}
-    .item b{padding:0;font-size:22px;font-weight:700}.item b em{color:var(--acc);font-size:22px;font-weight:800;background:none;padding:0}
-    .badge{top:30px;right:30px;min-width:40px;height:40px;font-size:18px;font-weight:800}
-    .layout>aside.panel{position:static!important;border-radius:0;border:0;border-left:1px solid var(--line);background:#fff;padding:30px;box-shadow:none;display:flex;flex-direction:column;min-height:calc(100vh - 86px)}
-    aside h2{font-size:30px;font-weight:800}
-    .line{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-    .line b{font-size:21px}.line small{font-size:16px}
-    .q{gap:14px}.q button{min-width:52px;min-height:52px;border-radius:12px;border:1px solid var(--line);background:#f3f4f8;font-size:24px}
-    .q button:last-child{background:var(--nav);border-color:var(--nav);color:#fff}.q b{font-size:24px!important}
-    .line .row>b{font-size:25px}
-    .del{min-width:50px;min-height:50px;border-radius:12px;background:#fee2e2;border-color:#fee2e2}
-    aside .row:nth-last-of-type(1){border-top:0}
-    aside>.row[style]{margin-top:auto!important;padding-top:18px;border-top:2px dashed var(--line)}
-    .total{font-size:44px;font-weight:800;letter-spacing:-.02em}
-    .empty{background:#fff;border:2px dashed var(--line);border-radius:18px;padding:70px 20px;flex:1}
-    /* review / tables */
-    .panel{border-radius:20px;border:1px solid var(--line);box-shadow:none;padding:0;overflow:hidden}
-    th{font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);background:#f8f9fb;padding:18px 24px}td{font-size:28px;padding:24px;font-weight:700}
-    td:nth-child(3){color:var(--mute);font-weight:500}tr:last-child td{background:#fff4ea;border-top:2px solid #fed7aa}
-    tr:last-child .total{color:#9a3412;font-size:56px}
-    .row[style*="gap:16px"] button{min-height:84px;font-size:24px}
-    /* payment method */
-    .pay{gap:26px}.pay button{border:2px solid var(--line);border-radius:28px;min-height:420px;font-size:36px;font-weight:800;gap:14px;background:#fff;box-shadow:none}
-    .pay .big{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font-size:60px;margin-bottom:14px}
-    .pay button:nth-child(1) .big{background:#dcfce7}.pay button:nth-child(2) .big{background:#dbeafe}.pay button:nth-child(3) .big{background:#ede9fe}
-    .pay small{font-size:20px;line-height:1.35;max-width:300px}
-    div.panel.row{padding:14px 26px;border-radius:18px;background:#fff}div.panel.row .total{font-size:42px;color:#9a3412}
-    /* cash */
-    .ttl{display:flex;align-items:center;gap:14px}.ticon{width:52px;height:52px;border-radius:14px;background:#dcfce7;display:grid;place-items:center;font-size:28px}
-    .lbl{font-weight:700;margin:18px 0 8px;font-size:18px}.lbl+.quick{margin-top:0}
-    .amt{font-size:46px;font-weight:800;border-radius:16px;border:3px solid var(--nav);background:#fff;min-height:84px}.amt.bad{border-color:var(--err)}
-    .msg.err{background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d;border-radius:14px}.eic{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--err);display:grid;place-items:center;font-weight:800;color:var(--err);flex:none}
-    .quick button{border:1px solid var(--line);border-radius:12px;min-height:60px;font-size:20px}.quick button.on{background:var(--nav);border-color:var(--nav);color:#fff}
-    .msg.ok{background:#dcfce7;border:2px solid #86efac;color:#14532d}.msg.ok small{font-weight:600}.msg .total{font-size:42px}
-    .keys{gap:14px}.keys button{border:1px solid var(--line);border-radius:16px;font-size:34px;min-height:100px;background:#fff}.keys button:nth-child(n+10){background:#f3f4f8}
-    /* qr / card / success / receipt */
-    .qr{border:0;border-radius:0;background:#fff}.two>.panel{padding:30px;border-radius:28px}
-    ol{list-style:none;counter-reset:s;padding:0}ol li{counter-increment:s;display:flex;gap:14px;align-items:center;margin:14px 0}
-    ol li::before{content:counter(s);width:40px;height:40px;border-radius:50%;background:var(--nav);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
-    .center{max-width:560px!important}.center .panel{text-align:left}.center .panel .row{padding:16px 24px!important}
-    .check{width:120px;height:120px;font-size:68px;background:var(--ok)}
-    .receipt{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;border-radius:10px;box-shadow:0 6px 24px #0f172a1f;max-width:510px;padding:30px}
-    .toast{background:var(--nav);bottom:30px;font-size:18px;box-shadow:none}
-    @media(max-width:860px){.layout{grid-template-columns:1fr}.layout>section{padding:20px 14px}.layout>aside.panel{min-height:0}header{height:auto;padding:12px 16px;flex-wrap:wrap}}
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+  <style id="desktop-pos">
+    /* Shared desktop foundation; payment and receipt behavior stays unchanged. */
+    :root,
+    :root[data-theme="dark"],
+    :root:not([data-theme="light"]) {
+      --bg: #f6f7f9;
+      --card: #fff;
+      --ink: #18181b;
+      --mute: #64646f;
+      --nav: #641d32;
+      --acc: #781f3a;
+      --line: #e5e5eb;
+      --ok: #15803d
+    }
+
+    body {
+      font: 16px/1.5 "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 232px minmax(0, 1fr);
+      min-height: 100vh
+    }
+
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 28px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 28px
+    }
+
+    .store-image-area {
+      height: 116px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #faf4f6;
+      overflow: hidden
+    }
+
+    .store-image-area img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .brand {
+      display: block;
+      font-size: 21px;
+      margin-top: 16px
+    }
+
+    .brand small {
+      display: block;
+      font-size: 13px;
+      color: var(--mute);
+      font-weight: 400;
+      margin-top: 4px
+    }
+
+    .sidebar nav {
+      display: grid;
+      gap: 8px
+    }
+
+    .sidebar nav button {
+      text-align: left;
+      min-height: 48px;
+      padding: 12px 16px;
+      border: 0;
+      background: transparent;
+      font-size: 15px;
+      color: var(--mute)
+    }
+
+    .sidebar nav button.active {
+      color: var(--acc);
+      background: #f7eaf0;
+      box-shadow: inset 3px 0 var(--acc)
+    }
+
+    .sidebar nav button:disabled {
+      opacity: .5
+    }
+
+    .sidebar nav .new-transaction {
+      border: 1px solid var(--line);
+      color: var(--ink);
+      margin-bottom: 16px
+    }
+
+    .sidebar-note {
+      margin-top: auto;
+      font-size: 12px;
+      color: var(--mute)
+    }
+
+    .workspace {
+      min-width: 0
+    }
+
+    header {
+      background: #fff;
+      color: var(--ink);
+      padding: 22px 32px;
+      border-bottom: 1px solid var(--line);
+      justify-content: center
+    }
+
+    .steps {
+      gap: 12px;
+      flex-wrap: nowrap
+    }
+
+    .steps span {
+      border: 1px solid var(--line);
+      color: var(--mute);
+      background: #f8f8fa;
+      font-size: 14px;
+      padding: 10px 20px
+    }
+
+    .steps .on {
+      background: var(--acc);
+      border-color: var(--acc);
+      color: #fff
+    }
+
+    .steps .done {
+      background: #f7eaf0;
+      border-color: #e7ccd5;
+      color: var(--acc)
+    }
+
+    main {
+      max-width: 1500px;
+      padding: 32px;
+      margin: auto
+    }
+
+    h1 {
+      font-size: clamp(24px, 2.3vw, 32px);
+      letter-spacing: -.035em;
+      font-weight: 800
+    }
+
+    h2 {
+      font-size: 23px
+    }
+
+    p.sub {
+      font-size: 15px
+    }
+
+    button {
+      border: 1px solid var(--line);
+      min-height: 48px;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: background .15s, box-shadow .15s
+    }
+
+    button:hover:not(:disabled) {
+      box-shadow: 0 3px 12px #18181b0d
+    }
+
+    button.p {
+      font-size: 16px;
+      min-height: 54px
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--acc);
+      outline-offset: 3px
+    }
+
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 28px;
+      align-items: start
+    }
+
+    .layout>section {
+      min-width: 0
+    }
+
+    .toprow {
+      margin-bottom: 20px;
+      display: block
+    }
+
+    .browse-note {
+      color: var(--mute);
+      margin: 6px 0 0;
+      font-size: 14px
+    }
+
+    .search-field {
+      display: block;
+      margin: 22px 0 16px
+    }
+
+    .search-field span {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
+
+    .search-field input {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 22px
+    }
+
+    .chips button {
+      border-radius: 99px;
+      min-height: 44px;
+      padding: 8px 18px;
+      font-size: 14px
+    }
+
+    .chips .on {
+      background: var(--acc);
+      border-color: var(--acc);
+      color: #fff
+    }
+
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px
+    }
+
+    .item {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      min-height: 0;
+      gap: 12px;
+      box-shadow: 0 3px 12px #18181b04
+    }
+
+    .item.sel {
+      border-color: var(--acc);
+      box-shadow: 0 0 0 1px var(--acc)
+    }
+
+    .ico {
+      flex: none;
+      aspect-ratio: 1.2;
+      min-height: 0;
+      width: 100%
+    }
+
+    .item b {
+      display: block;
+      font-size: 16px
+    }
+
+    .item b em {
+      display: block;
+      color: var(--ink);
+      font-size: 17px;
+      margin-top: 4px
+    }
+
+    .add-label {
+      color: var(--acc);
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .badge {
+      top: 20px;
+      right: 20px;
+      min-width: 30px;
+      height: 30px;
+      box-shadow: 0 2px 8px #0002
+    }
+
+    .panel {
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: 0 4px 20px #18181b05
+    }
+
+    .order-cart {
+      position: sticky;
+      top: 24px
+    }
+
+    .order-cart h2 {
+      margin: 0
+    }
+
+    .order-cart>.row:first-child {
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .cart-items {
+      margin-top: 18px
+    }
+
+    .line {
+      padding: 14px;
+      margin-bottom: 12px
+    }
+
+    .line small {
+      color: var(--ink) !important;
+      font-size: 13px
+    }
+
+    .line .row>div {
+      min-width: 0
+    }
+
+    .q {
+      gap: 8px
+    }
+
+    .q button {
+      min-width: 44px;
+      min-height: 44px;
+      font-size: 22px
+    }
+
+    .q b {
+      font-size: 16px
+    }
+
+    .del {
+      font-size: 12px;
+      min-width: 58px;
+      min-height: 44px;
+      padding: 0 8px;
+      background: #fff5f5
+    }
+
+    .total {
+      font-size: 28px;
+      color: var(--ink) !important
+    }
+
+    .cart-total {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      margin: 18px 0
+    }
+
+    .empty {
+      padding: 32px 16px;
+      font-size: 14px;
+      grid-column: 1/-1
+    }
+
+    .empty .big {
+      font-size: 32px
+    }
+
+    .table-panel {
+      padding: 0;
+      overflow: auto
+    }
+
+    table {
+      min-width: 530px
+    }
+
+    th {
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .06em;
+      color: var(--mute);
+      background: #fafafb
+    }
+
+    th,
+    td {
+      padding: 18px 20px
+    }
+
+    td {
+      font-size: 16px;
+      color: var(--ink)
+    }
+
+    tr:last-child td {
+      background: #faf7f8;
+      border-bottom: 0
+    }
+
+    .review-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 16px
+    }
+
+    .review-actions button {
+      flex: 1
+    }
+
+    .review-actions .p {
+      flex: 2
+    }
+
+    .pay button {
+      min-height: 240px;
+      font-size: 23px
+    }
+
+    .pay small {
+      font-size: 14px
+    }
+
+    .two {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+    }
+
+    .two>* {
+      min-width: 0
+    }
+
+    .amt,
+    .amt span,
+    .quick button,
+    .msg.ok,
+    .msg.ok small {
+      color: var(--ink) !important
+    }
+
+    .msg.ok {
+      background: #f7f8fa;
+      border: 1px solid var(--line)
+    }
+
+    .qr {
+      max-width: 100%
+    }
+
+    .receipt {
+      max-width: 100%;
+      overflow-wrap: anywhere
+    }
+
+    .receipt .row {
+      flex-wrap: wrap
+    }
+
+    .center .panel .row {
+      flex-wrap: wrap
+    }
+
+    @media(min-width:1600px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr) 380px
+      }
+
+      .ico {
+        aspect-ratio: 1.4
+      }
+    }
+
+    @media(max-width:1200px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+
+      .app-shell {
+        grid-template-columns: 200px minmax(0, 1fr)
+      }
+
+      main {
+        padding: 24px
+      }
+
+      .layout {
+        gap: 20px;
+        grid-template-columns: minmax(0, 1fr) 310px
+      }
+
+      .sidebar {
+        padding: 24px 16px
+      }
+    }
+
+    @media(max-width:1000px) {
+
+      .layout,
+      .two {
+        grid-template-columns: 1fr
+      }
+
+      .order-cart {
+        position: static
+      }
+
+      .steps span {
+        padding: 10px 13px
+      }
+
+      .pay {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:700px) {
+      .app-shell {
+        display: block
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        padding: 16px;
+        gap: 16px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line)
+      }
+
+      .store-image-area {
+        width: 64px;
+        height: 64px;
+        flex: none
+      }
+
+      .store-brand {
+        display: flex;
+        gap: 14px;
+        align-items: center
+      }
+
+      .brand {
+        margin: 0;
+        font-size: 19px
+      }
+
+      .sidebar nav {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap
+      }
+
+      .sidebar nav button {
+        font-size: 12px;
+        padding: 8px 12px;
+        min-height: 44px
+      }
+
+      .sidebar nav .new-transaction {
+        margin: 0
+      }
+
+      .sidebar-note {
+        display: none
+      }
+
+      header {
+        padding: 16px 12px
+      }
+
+      .steps {
+        width: 100%;
+        gap: 6px
+      }
+
+      .steps span {
+        flex: 1;
+        text-align: center;
+        font-size: 11px;
+        padding: 9px 4px
+      }
+
+      main {
+        padding: 20px 16px
+      }
+
+      .grid {
+        gap: 12px
+      }
+
+      .item {
+        padding: 10px
+      }
+
+      .item b {
+        font-size: 14px
+      }
+
+      .review-actions {
+        flex-direction: column
+      }
+
+      .row {
+        flex-wrap: wrap
+      }
+
+      .q {
+        flex-wrap: nowrap
+      }
+
+      th,
+      td {
+        padding: 14px 12px
+      }
+
+      .total {
+        font-size: 26px
+      }
+
+      .pay button {
+        min-height: 170px
+      }
+
+      .keys button {
+        min-height: 60px
+      }
+
+      .two {
+        gap: 20px
+      }
+    }
+
+    @media print {
+      .sidebar {
+        display: none !important
+      }
+
+      .app-shell {
+        display: block
+      }
+
+      main {
+        padding: 0
+      }
+
+      .two {
+        display: block
+      }
+
+      .receipt {
+        box-shadow: none;
+        margin: auto
+      }
+
+      .workspace {
+        width: 100%
+      }
+    }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo">CS</div>
-      <div>
-        Campus Store<br>
-        <small style="font-weight:400;color:#94a3b8">Self-service kiosk</small>
+  <div class="app-shell">
+    <aside class="sidebar noprint" aria-label="Store navigation">
+      <div class="store-brand">
+        <div class="store-image-area">
+          <img src="images/store.jpg" alt="Campus Store">
+        </div>
+        <div class="brand">Campus Store<small>Self-service kiosk</small></div>
       </div>
+      <nav id="side-nav" aria-label="Transaction sections"></nav>
+      <div class="sidebar-note">Campus Store POS<br>Choose. Review. Pay.</div>
+    </aside>
+    <div class="workspace">
+      <header>
+        <div class="steps" id="steps" aria-label="Transaction progress"></div>
+      </header>
+      <main id="app"></main>
     </div>
-
-    <div class="steps" id="steps"></div>
-  </header>
-
-  <main id="app"></main>
+  </div>
   <div id="toast" class="toast" hidden></div>
 
   <script>
@@ -663,7 +1272,7 @@
 
     try {
       seq = +localStorage.getItem("kiosk_seq") || 0
-    } catch (e) {}
+    } catch (e) { }
 
     const items = () => PRODUCTS
       .filter(p => S.cart[p.id])
@@ -686,6 +1295,34 @@
     }
 
     function setCat(c) { S.cat = c; render() }
+
+    const matchingProducts = () => PRODUCTS.filter(p =>
+      (!S.cat || S.cat === "All" || p.cat === S.cat) &&
+      p.name.toLowerCase().includes((S.search || "").toLowerCase())
+    );
+
+    function setSearch(value) {
+      S.search = value;
+      const input = document.getElementById("product-search");
+      const cursor = input.selectionStart;
+      render();
+      const next = document.getElementById("product-search");
+      next.focus();
+      next.setSelectionRange(cursor, cursor);
+    }
+
+    function sidebar() {
+      const current = STEP[S.screen];
+      // Reuse existing navigation and reset functions; completed transactions stay read-only.
+      const editable = current < 4;
+      document.getElementById("side-nav").innerHTML =
+        `<button class="new-transaction" onclick="newTxn()">+ New Transaction</button>` +
+        [["Order", "order", 1], ["Review", "review", 2], ["Payment", "method", 3], ["Receipt", "receipt", 4]].map(([label, screen, step]) => {
+          const active = current === step;
+          const allowed = step === 4 ? S.screen === "receipt" : editable && (step === 1 || count() > 0);
+          return `<button class="${active ? 'active' : ''}" ${active ? 'aria-current="step"' : ''} ${allowed ? '' : 'disabled'} onclick="go('${screen}')">${label}</button>`;
+        }).join("");
+    }
 
     function go(s) {
       S.screen = s;
@@ -737,7 +1374,7 @@
 
       try {
         localStorage.setItem("kiosk_seq", seq)
-      } catch (e) {}
+      } catch (e) { }
 
       S.txn = {
         no: "TXN-" + new Date().getFullYear() + "-" + String(seq).padStart(5, "0"),
@@ -848,7 +1485,7 @@
               class="del"
               aria-label="Remove ${i.name}"
               onclick="rem(${i.id})"
-            >🗑</button>
+            >Remove</button>
           </div>
 
           <div class="row">
@@ -895,7 +1532,7 @@
           <td colspan="3">
             <b>Total Amount</b> (${count()} items)
           </td>
-          <td class="total" style="color:var(--acc)">
+          <td class="total" style="color:var(--ink)">
             ${peso(total())}
           </td>
         </tr>
@@ -905,7 +1542,7 @@
     const dueBox = l => `
       <div class="panel row">
         <span style="color:var(--mute)">${l}</span>
-        <span class="total" style="color:var(--acc)">
+        <span class="total" style="color:var(--ink)">
           ${peso(total())}
         </span>
       </div>
@@ -915,15 +1552,21 @@
       order: () => `
         <div class="layout">
           <section>
-            <div class="row toprow">
+            <div class="toprow">
               <h1>Tap a product to add it</h1>
-              <div class="chips">${["All","Drinks","Food","Snacks"].map(c => `<button class="${(S.cat || "All") === c ? "on" : ""}" onclick="setCat('${c}')">${c}</button>`).join("")}</div>
+              <p class="browse-note">Find your favorites and build your order.</p>
             </div>
+            <label class="search-field" for="product-search">
+              <span>Product search</span>
+              <input id="product-search" type="search" placeholder="Search products..." autocomplete="off" oninput="setSearch(this.value)">
+            </label>
+            <div class="chips" aria-label="Product categories">${["All", "Drinks", "Food", "Snacks"].map(c => `<button class="${(S.cat || "All") === c ? "on" : ""}" aria-pressed="${(S.cat || "All") === c}" onclick="setCat('${c}')">${c}</button>`).join("")}</div>
 
             <div class="grid">
-              ${PRODUCTS.filter(p => !S.cat || S.cat === "All" || p.cat === S.cat).map(p => `
+              ${matchingProducts().map(p => `
                 <button
                   class="item ${S.cart[p.id] ? "sel" : ""}"
+                  aria-label="Add ${p.name} to order"
                   onclick="add(${p.id})"
                 >
                   ${S.cart[p.id] ? `<span class="badge">${S.cart[p.id]}</span>` : ""}
@@ -937,25 +1580,24 @@
                     ${p.name}
                     <em>${peso(p.price)}</em>
                   </b>
+                  <span class="add-label">+ Add to order</span>
                 </button>
               `).join("")}
+              ${matchingProducts().length ? "" : '<div class="empty" role="status">No products found.</div>'}
             </div>
           </section>
 
           <aside
-            class="panel"
-            style="align-self:start;position:sticky;top:12px"
+            class="panel order-cart"
           >
             <div class="row">
               <h2 style="margin:0">Your Order</h2>
               <span style="color:var(--mute)">${count()} items</span>
             </div>
 
-            <br>
+            <div class="cart-items">${cartHTML()}</div>
 
-            ${cartHTML()}
-
-            <div class="row" style="margin:12px 0">
+            <div class="row cart-total">
               <b>Total</b>
               <span class="total">${peso(total())}</span>
             </div>
@@ -966,7 +1608,7 @@
               ${total() ? "" : "disabled"}
               onclick="go('review')"
             >
-              Proceed to Payment →
+              Proceed to Review &rarr;
             </button>
           </aside>
         </div>
@@ -979,16 +1621,16 @@
           Check your items before paying. Tap Back to make changes — your items stay in the cart.
         </p>
 
-        <div class="panel">
+        <div class="panel table-panel">
           ${sumTable()}
         </div>
 
-        <div class="row" style="margin-top:16px;gap:16px">
+        <div class="review-actions">
           <button
             style="flex:1"
             onclick="go('order')"
           >
-            ← Back
+            &larr; Back to Order
           </button>
 
           <button
@@ -1060,23 +1702,21 @@
               </p>
 
               <div class="amt ${S.error ? "bad" : ""}">
-                ${
-                  v === null
-                    ? '<span style="color:var(--mute)">₱0.00</span>'
-                    : peso(v)
-                }
+                ${v === null
+            ? '<span style="color:var(--mute)">₱0.00</span>'
+            : peso(v)
+          }
               </div>
 
-              ${
-                S.error
-                  ? `
+              ${S.error
+            ? `
                     <div class="msg err" role="alert" style="display:flex;gap:12px;align-items:center"><span class="eic">!</span><span>
                       <b>${S.error.split(". ")[0]}.</b><br>
                       ${S.error.split(". ").slice(1).join(". ")}</span>
                     </div>
                   `
-                  : ""
-              }
+            : ""
+          }
 
               <p class="lbl">Quick amounts</p>
               <div class="quick">
@@ -1106,7 +1746,7 @@
 
             <section>
               <div class="keys">
-                ${[1,2,3,4,5,6,7,8,9].map(n => `
+                ${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `
                   <button onclick="key('${n}')">${n}</button>
                 `).join("")}
 
@@ -1277,14 +1917,13 @@
             </p>
 
             <div class="panel">
-              ${
-                [
-                  ["Transaction No.", t.no],
-                  ["Payment method", t.method],
-                  ["Transaction amount", peso(t.total)],
-                  ["Amount paid", peso(t.paid)],
-                  ["Change", peso(t.change)]
-                ].map(r => `
+              ${[
+            ["Transaction No.", t.no],
+            ["Payment method", t.method],
+            ["Transaction amount", peso(t.total)],
+            ["Amount paid", peso(t.paid)],
+            ["Change", peso(t.change)]
+          ].map(r => `
                   <div
                     class="row"
                     style="padding:9px 0;border-bottom:1px solid var(--line)"
@@ -1295,7 +1934,7 @@
                     <b>${r[1]}</b>
                   </div>
                 `).join("")
-              }
+          }
             </div>
 
             <br>
@@ -1341,16 +1980,15 @@
                 <span>Date</span>
                 <span>
                   ${t.date.toLocaleString("en-PH", {
-                    dateStyle: "long",
-                    timeStyle: "short"
-                  })}
+          dateStyle: "long",
+          timeStyle: "short"
+        })}
                 </span>
               </div>
 
               <hr>
 
-              ${
-                t.items.map(i => `
+              ${t.items.map(i => `
                   <div class="row">
                     <b>${i.name}</b>
                     <b>${peso(i.sub)}</b>
@@ -1360,7 +1998,7 @@
                     ${i.qty} × ${peso(i.price)}
                   </div>
                 `).join("")
-              }
+          }
 
               <hr>
 
@@ -1436,8 +2074,10 @@
 
     function render() {
       stepper();
+      sidebar();
       const appEl = document.getElementById("app");
       appEl.innerHTML = V[S.screen]();
+      if (S.screen === "order") document.getElementById("product-search").value = S.search || "";
       if (render.last !== S.screen) {
         appEl.classList.remove("enter"); void appEl.offsetWidth; appEl.classList.add("enter");
         window.scrollTo(0, 0); render.last = S.screen
@@ -1458,4 +2098,5 @@
     render();
   </script>
 </body>
+
 </html>
