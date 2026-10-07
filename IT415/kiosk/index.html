@@ -1172,6 +1172,37 @@
         width: 100%
       }
     }
+
+    /* Payment controls reuse the shared desktop theme. */
+    #cash-amount {
+      width: 100%;
+      background: var(--card);
+      color: var(--ink);
+      font-family: inherit
+    }
+
+    .pay button {
+      box-shadow: 0 4px 20px #18181b05;
+      padding: 24px
+    }
+
+    .pay button:hover {
+      border-color: var(--acc);
+      background: #faf7f8
+    }
+
+    .bar i {
+      background: var(--acc)
+    }
+
+    #cash-amount::placeholder {
+      color: var(--ink);
+      opacity: 1
+    }
+
+    .keys button:last-child {
+      grid-column: 1 / -1
+    }
   </style>
 </head>
 
@@ -1324,7 +1355,15 @@
         }).join("");
     }
 
+    let cardTimer;
+
+    function cancelCardPayment() {
+      clearTimeout(cardTimer);
+      S.processing = false;
+    }
+
     function go(s) {
+      cancelCardPayment();
       S.screen = s;
       S.error = "";
       render()
@@ -1356,6 +1395,7 @@
     }
 
     function newTxn() {
+      cancelCardPayment();
       S = {
         screen: "order",
         cart: {},
@@ -1370,6 +1410,7 @@
     }
 
     function complete(method, paid) {
+      if (S.txn || total() <= 0 || !Number.isFinite(paid) || paid < total()) return;
       seq++;
 
       try {
@@ -1383,10 +1424,24 @@
         total: total(),
         method,
         paid,
-        change: paid - total()
+        change: Math.round((paid - total()) * 100) / 100
       };
 
       go("success")
+    }
+
+    const cashValue = () => /^\d+(\.\d{0,2})?$/.test(S.paid.trim()) &&
+      Number.isFinite(Number(S.paid)) ? Number(S.paid) : null;
+
+    function updateCash(value) {
+      S.paid = value;
+      S.error = "";
+      const input = document.getElementById("cash-amount");
+      const cursor = input.selectionStart;
+      render();
+      const next = document.getElementById("cash-amount");
+      next.focus();
+      next.setSelectionRange(cursor, cursor);
     }
 
     function key(k) {
@@ -1394,7 +1449,10 @@
         S.paid = ""
       } else if (k === "B") {
         S.paid = S.paid.slice(0, -1)
-      } else if (S.paid.length < 7) {
+      } else if (k === ".") {
+        if (!S.paid.includes(".")) S.paid = (S.paid || "0") + ".";
+      } else if (/^\d$/.test(k) && S.paid.length < 12 &&
+        (!S.paid.includes(".") || S.paid.split(".")[1].length < 2)) {
         S.paid += k
       }
 
@@ -1409,9 +1467,9 @@
     }
 
     function payCash() {
-      const v = S.paid === "" ? NaN : Number(S.paid);
+      const v = cashValue();
 
-      if (isNaN(v) || v < 0) {
+      if (v === null || v < 0) {
         S.error = "Invalid amount. Enter the amount you are paying.";
         return render()
       }
@@ -1430,15 +1488,16 @@
     }
 
     function cardPay() {
-      const b = document.getElementById("pb");
-      document.getElementById("proc").hidden = false;
-      b.disabled = true;
-
-      requestAnimationFrame(() =>
-        document.querySelector(".bar i").style.width = "100%"
-      );
-
-      setTimeout(() => complete("Credit/Debit Card", total()), 1700)
+      if (S.processing || S.screen !== "card" || total() <= 0) return;
+      S.processing = true;
+      const transactionState = S;
+      const amount = total();
+      render();
+      cardTimer = setTimeout(() => {
+        if (S === transactionState && S.screen === "card" && S.processing) {
+          complete("Credit/Debit Card", amount);
+        }
+      }, 1700);
     }
 
     const STEP = {
@@ -1650,7 +1709,7 @@
             <p class="sub">Tap one of the options below.</p>
           </div>
 
-          ${dueBox("Amount due")}
+          ${dueBox("AMOUNT DUE")}
         </div>
 
         <div class="pay">
@@ -1682,12 +1741,12 @@
         <br>
 
         <button onclick="go('review')">
-          ← Back to Order
+          ← Back to Review
         </button>
       `,
 
       cash: () => {
-        const v = S.paid === "" ? null : Number(S.paid);
+        const v = cashValue();
         const ok = v !== null && v >= total();
 
         return `
@@ -1701,18 +1760,17 @@
                 Amount paid
               </p>
 
-              <div class="amt ${S.error ? "bad" : ""}">
-                ${v === null
-            ? '<span style="color:var(--mute)">₱0.00</span>'
-            : peso(v)
-          }
-              </div>
+              <label for="cash-amount" class="sub">Enter cash amount (PHP)</label>
+              <input id="cash-amount" class="amt ${S.error ? "bad" : ""}"
+                type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"
+                aria-label="Amount paid" aria-invalid="${!!S.error}" ${S.error ? 'aria-describedby="cash-error"' : ""}
+                oninput="updateCash(this.value)" onkeydown="if(event.key === 'Enter') payCash()">
 
               ${S.error
             ? `
-                    <div class="msg err" role="alert" style="display:flex;gap:12px;align-items:center"><span class="eic">!</span><span>
+                    <div id="cash-error" class="msg err" role="alert" style="display:flex;gap:12px;align-items:center"><span class="eic">!</span><span>
                       <b>${S.error.split(". ")[0]}.</b><br>
-                      ${S.error.split(". ").slice(1).join(". ")}</span>
+                      ${S.error.split(". ").slice(1).join(". ").replace(/\u20b1[\d,.]+/g, '<span style="color:var(--ink)">$&</span>')}</span>
                     </div>
                   `
             : ""
@@ -1738,7 +1796,7 @@
                 <div class="row">
                   <div><b>Change</b>${ok ? `<br><small>${peso(v)} − ${peso(total())}</small>` : ""}</div>
                   <span class="total">
-                    ${ok ? peso(v - total()) : "—"}
+                    ${ok ? peso(Math.round((v - total()) * 100) / 100) : "—"}
                   </span>
                 </div>
               </div>
@@ -1764,6 +1822,7 @@
                 >
                   ⌫
                 </button>
+                <button onclick="key('.')" aria-label="Decimal point">.</button>
               </div>
 
               <br>
@@ -1806,8 +1865,9 @@
 
             <ol style="font-size:20px;line-height:1.7">
               <li>
-                Scan the QR code using your supported payment application.
+                Open your supported payment app.
               </li>
+              <li>Scan the QR code.</li>
               <li>
                 Check that the amount is ${peso(total())} and approve it in your app.
               </li>
@@ -1859,7 +1919,7 @@
           <section>
             <h1>💳 Credit / Debit Card</h1>
 
-            ${dueBox("Amount due")}
+            ${dueBox("AMOUNT DUE")}
 
             <h3>
               Please tap, insert, or swipe your card.
@@ -1868,13 +1928,14 @@
             <div
               id="proc"
               class="msg"
-              style="background:#ede9fe;color:#4c1d95"
-              hidden
+              style="background:#f7eaf0;color:var(--ink)"
+              role="status" aria-live="polite"
+              ${S.processing ? "" : "hidden"}
             >
-              <b>Processing payment…</b>
+              <b>Processing payment...</b>
 
               <div class="bar">
-                <i></i>
+                <i style="width:${S.processing ? 100 : 0}%"></i>
               </div>
 
               Do not remove your card until the payment is complete.
@@ -1890,6 +1951,7 @@
 
               <button
                 id="pb"
+                ${S.processing ? "disabled" : ""}
                 class="p"
                 style="flex:2"
                 onclick="cardPay()"
@@ -2082,6 +2144,7 @@
         appEl.classList.remove("enter"); void appEl.offsetWidth; appEl.classList.add("enter");
         window.scrollTo(0, 0); render.last = S.screen
       }
+      if (S.screen === "cash") document.getElementById("cash-amount").value = S.paid;
       if (S.screen === "qr") drawQR()
     }
 
